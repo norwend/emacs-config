@@ -178,6 +178,7 @@
     "p"  '(projectile-command-map :which-key "projectile")
 
     ; Opening sth
+    "ot" '(term :which-key "Open terminal")
     
     ;; Misc
     "c"  '(:ignore t :which-key "config")
