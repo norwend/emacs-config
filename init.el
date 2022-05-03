@@ -45,6 +45,9 @@
 
 (set-face-attribute 'default nil :family "PT Mono" :height 170)
 
+; (setq doom-variable-pitch-font (font-spec :family "Monaco" :size 11))
+
+(setq doom-themes-treemacs-enable-variable-pitch nil)
 ;; Initialize package sources
 (require 'package)
 
