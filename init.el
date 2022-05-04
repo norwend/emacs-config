@@ -190,6 +190,7 @@
     "o"  '(:ignore t :which-key "open")
     "ot" '(term :which-key "Open terminal")
     "op" '(treemacs :which-key "Open file bar")
+    "oa" '(org-agenda :which-key "Org-agenda")
     
     ;; Misc
     "c"  '(:ignore t :which-key "config")
@@ -406,6 +407,12 @@
   :hook (org-mode . ndr/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
+
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
+  (setq org-agenda-files '("~/Documents/orgfiles/tasks.org"))
   (ndr/org-font-setup))
 
 (setq org-src-preserve-indentation t)
@@ -429,3 +436,4 @@
 (use-package visual-fill-column
   :hook (org-mode . ndr/org-mode-visual-fill))
 
+(setq calendar-week-start-day 1) ; Set the week start day to Monday
