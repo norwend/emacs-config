@@ -46,8 +46,6 @@
 
 (set-face-attribute 'default nil :family "PT Mono" :height 170)
 
-; (setq doom-variable-pitch-font (font-spec :family "Monaco" :size 11))
-
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 ;; Initialize package sources
 (require 'package)
@@ -412,7 +410,7 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
 
-  (setq org-agenda-files '("~/Documents/orgfiles/tasks.org"))
+  (setq org-agenda-files '("~/Documents/orgfiles/tasks.org" "~/Documents/orgfiles/contacts.org"))
   (ndr/org-font-setup))
 
 (setq org-src-preserve-indentation t)
@@ -429,7 +427,7 @@
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 (defun ndr/org-mode-visual-fill ()
-  (setq visual-fill-column-width 105
+  (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
