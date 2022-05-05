@@ -45,6 +45,8 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
+(setenv "PATH" "/Users/stepan/.emacs.d/bin:/Users/stepan/.bin:/Users/stepan/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/stepan/.cargo/bin")
+
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 term-mode-hook
@@ -307,6 +309,7 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
+(setq doom-themes-treemacs-theme "doom-colors")
 
 (defun ndr/org-mode-setup ()
   (org-indent-mode)
@@ -386,21 +389,41 @@
 (use-package lsp-mode
 :init
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-; (setq lsp-keymap-prefix "SPC l")
+(setq lsp-keymap-prefix "C-c l")
 :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
        (c++-mode . lsp)
        ;; if you want which-key integration
        (lsp-mode . lsp-enable-which-key-integration))
-:commands lsp)
+:commands lsp lsp-deferred
+:config
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list
+  :config
+  (lsp-treemacs-sync-mode 1)
+  :after lsp)
+(setq lsp-enable-on-type-formatting nil))
 
 ;  (use-package dap-mode)
 ;  (require 'dap-lldb)
 
-(use-package company)
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+       ("<tab>" . company-complete-selection))
+       (:map lsp-mode-map
+       ("<tab>" . company-indent-or-complete-common))
+  :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
 (use-package company-box
-  :hook (company-mode . company-box-mode))
+    :hook (company-mode . company-box-mode))
 
 (use-package flycheck
   :ensure t
@@ -409,6 +432,10 @@
 (use-package yasnippet
   :ensure t
   :init (yas-global-mode 1))
+
+(use-package smartparens
+  :hook (c++-mode . smartparens-mode))
+(require 'smartparens-config)
 
 (ndr/leader-keys
   ; Buffer bindings
@@ -448,7 +475,7 @@
   "coe" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config in Org mode")
   "m"   '(:ignore t :which-key "currmode")
 
-  "l"   '(lsp-mode-map :which-key "lsp")
+  ; "l"   '(lsp-mode-map :which-key "lsp")
 )
 
 (defhydra hydra-text-scale (:timeout 4)
