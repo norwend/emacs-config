@@ -401,22 +401,25 @@
 
   ; Projectile
   "p"  '(projectile-command-map :which-key "projectile")
+  "ph" '(projectile-add-known-project :which-key "Add to known projects")
 
   ; Git
   "g"  '(:ignore t :which-key "git")
-  "gs" '(magit-status :which-key "Git status")
-  
+  "go" '(magit-status :which-key "Open Magit")
+
   ; Opening sth
   "o"  '(:ignore t :which-key "open")
   "ot" '(term :which-key "Open terminal")
   "op" '(treemacs :which-key "Open file bar")
   "oa" '(org-agenda :which-key "Org-agenda")
-  
+
   ;; Misc
   "c"   '(:ignore t :which-key "config")
-  "cow" '(org-babel-tangle :which-key "Write the config from Org file")
+  "ce"  '((lambda () (interactive) (find-file "~/.emacs.d/init.el")) :which-key "Edit config")
+  "cr"  '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload config")
+  "cow" '(org-babel-tangle :which-key "Write config from Org file")
+  "coe" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config in Org mode")
   "m"   '(:ignore t :which-key "currmode")
-  ;; "ce" '(counsel-find-file ~/.emacs.d/init.el :which-key "Edit config")
 )
 
 (defhydra hydra-text-scale (:timeout 4)
