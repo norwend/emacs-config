@@ -1,3 +1,10 @@
+#+title: Конфиг для GNU Emacs
+#+author: Степан Ильин
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :mkdirp yes
+
+* Custom
+** Доверенные темы и прочая херня
+#+begin_src emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -7,12 +14,18 @@
    '("d268b67e0935b9ebc427cad88ded41e875abfcc27abd409726a92e55459e0d01" "b186688fbec5e00ee8683b9f2588523abdf2db40562839b2c5458fcfb322c8a4" "613aedadd3b9e2554f39afe760708fc3285bf594f6447822dd29f947f0775d6c" "1bddd01e6851f5c4336f7d16c56934513d41cc3d0233863760d1798e74809b4b" "c4063322b5011829f7fdd7509979b5823e8eea2abf1fe5572ec4b7af1dd78519" "a82ab9f1308b4e10684815b08c9cac6b07d5ccb12491f44a942d845b406b0296" "97db542a8a1731ef44b60bc97406c1eb7ed4528b0d7296997cbb53969df852d6" "cbdf8c2e1b2b5c15b34ddb5063f1b21514c7169ff20e081d39cf57ffee89bc1e" "6c98bc9f39e8f8fd6da5b9c74a624cbb3782b4be8abae8fd84cbc43053d7c175" "f7fed1aadf1967523c120c4c82ea48442a51ac65074ba544a5aefc5af490893b" "850bb46cc41d8a28669f78b98db04a46053eca663db71a001b40288a9b36796c" "e6f3a4a582ffb5de0471c9b640a5f0212ccf258a987ba421ae2659f1eaa39b09" "c2aeb1bd4aa80f1e4f95746bda040aafb78b1808de07d340007ba898efa484f5" "4699e3a86b1863bbc695236036158d175a81f0f3ea504e2b7c71f8f7025e19e3" "1278c5f263cdb064b5c86ab7aa0a76552082cf0189acf6df17269219ba496053" "6f4421bf31387397f6710b6f6381c448d1a71944d9e9da4e0057b3fe5d6f2fad" "4b6b6b0a44a40f3586f0f641c25340718c7c626cbf163a78b5a399fbe0226659" "84b14a0a41bb2728568d40c545280dbe7d6891221e7fbe7c2b1c54a3f5959289" "b5803dfb0e4b6b71f309606587dd88651efe0972a5be16ece6a958b197caeed8" "a9a67b318b7417adbedaab02f05fa679973e9718d9d26075c6235b1f0db703c8" "266ecb1511fa3513ed7992e6cd461756a895dcc5fef2d378f165fed1c894a78c" "23c806e34594a583ea5bbf5adf9a964afe4f28b4467d28777bcba0d35aa0872e" "8d7b028e7b7843ae00498f68fad28f3c6258eda0650fe7e17bfb017d51d0e2a2" "6c531d6c3dbc344045af7829a3a20a09929e6c41d7a7278963f7d3215139f6a7" "e19ac4ef0f028f503b1ccafa7c337021834ce0d1a2bca03fcebc1ef635776bea" "4a5aa2ccb3fa837f322276c060ea8a3d10181fecbd1b74cb97df8e191b214313" "0466adb5554ea3055d0353d363832446cd8be7b799c39839f387abb631ea0995" "3d47380bf5aa650e7b8e049e7ae54cdada54d0637e7bac39e4cc6afb44e8463b" "234dbb732ef054b109a9e5ee5b499632c63cc24f7c2383a849815dacc1727cb6" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "028c226411a386abc7f7a0fba1a2ebfae5fe69e2a816f54898df41a6a3412bb5" "da186cce19b5aed3f6a2316845583dbee76aea9255ea0da857d1c058ff003546" "7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae" "835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "353ffc8e6b53a91ac87b7e86bebc6796877a0b76ddfc15793e4d7880976132ae" default))
  '(package-selected-packages
    '(visual-fill-column org-bullets evil-magit counsel-projectile projectile hydra evil-collection evil general helpful good-scroll smooth-scrolling ivy-rich which-key use-package doom-themes doom-modeline counsel)))
+#+end_src
 
+** Шрифты 
+#+begin_src emacs-lisp
 (custom-theme-set-faces
    'user
    '(variable-pitch ((t (:family "PT Serif" :height 180))))
    '(fixed-pitch ((t ( :family "PT Mono" :height 160)))))
+#+end_src
 
+* Настройка пакетного менеджера
+#+begin_src emacs-lisp
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -29,7 +42,11 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+#+end_src
 
+* Интерфейс
+** Базовые настройки
+#+begin_src emacs-lisp
 ; No startup message
 (setq inhibit-startup-message t)
 
@@ -59,7 +76,10 @@
 (setq ring-bell-function 'ignore)
 
 (set-face-attribute 'default nil :family "PT Mono" :height 170)
+#+end_src
 
+** Doom-modeline
+#+begin_src emacs-lisp
 (use-package all-the-icons
   :if (display-graphic-p))
 
@@ -70,7 +90,10 @@
   :init (doom-modeline-mode 1))
 (setq doom-modeline-height 40)
 (setq doom-modeline-hud t)
+#+end_src
 
+** Установка тем (doom-themes)
+#+begin_src emacs-lisp
 (use-package doom-themes
   :ensure t
   :config
@@ -88,8 +111,13 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+#+end_src
+** Включаем тему
+#+begin_src emacs-lisp
 (load-theme 'doom-Iosvkem)
-
+#+end_src
+** Красивая прокрутка
+#+begin_src emacs-lisp
 (use-package good-scroll)
 (require 'good-scroll)
 (good-scroll-mode 1)
@@ -97,7 +125,12 @@
 (use-package smooth-scrolling)
 (require 'smooth-scrolling)
 (smooth-scrolling-mode 1)
+#+end_src
+* Помощники
+** ivy
+Очень крутой менеджер разных менюшек. Тут же установлен и swiper, хороший поисковик по файлу.
 
+#+begin_src emacs-lisp
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -117,7 +150,12 @@
   (setq ivy-use-virtual-buffers t
             ivy-count-format "%d/%d ")
   (ivy-mode 1))
+#+end_src
 
+** counsel
+Незаменимая штука, которая заменяет разные встроенные Emacs'овские программы на свои, более крутые.
+
+#+begin_src emacs-lisp
 (use-package counsel
   :bind  (("C-x b" . counsel-switch-buffer)
          ("M-x" . counsel-M-x)
@@ -126,17 +164,32 @@
          ("C-r" . 'counsel-minibuffer-history)))
 
 ;(use-package ido)
+#+end_src
 
+** which-key
+Отображает возможные хоткеи.
+
+#+begin_src emacs-lisp
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.5))
+#+end_src
 
+** ivy-rich
+Более подробное описание функций, команд и переменных в ivy.
+
+#+begin_src emacs-lisp
 (use-package ivy-rich)
 (require 'ivy-rich)
 (ivy-rich-mode 1)
+#+end_src
 
+** helpful
+Более подробная документация по компонентам Emacs.
+
+#+begin_src emacs-lisp
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -146,16 +199,31 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
+#+end_src
 
+** hydra
+Удобная утилита для создания разных менялок масштаба и прочих вещей, для который свойственно постепенное изменение состояния по кнопке.
+
+#+begin_src emacs-lisp
 (use-package hydra)
+#+end_src
 
+** general
+Лучший менеджер горячих клавиш.
+
+#+begin_src emacs-lisp
 (use-package general
   :config
   (general-create-definer ndr/leader-keys
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC"))
+#+end_src
+* Расширения
+** evil-mode
+Режим эмуляции поведения vim.
 
+#+begin_src emacs-lisp
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -177,7 +245,11 @@
   :after evil
   :config
   (evil-collection-init))
+#+end_src
+** Projectile
+Менеджер проектов.
 
+#+begin_src emacs-lisp
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -192,11 +264,19 @@
 ;;(define-key projectile-mode-map (kbd "SPC p") 'projectile-command-map)
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
+#+end_src
+** Magit
+Клиент git для Emacs. Довольно удобный.
 
+#+begin_src emacs-lisp
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
+** Treemacs
+Боковая панелька с деревом папок.
 
+#+begin_src emacs-lisp
 (use-package treemacs
   :ensure t
   :defer t
@@ -307,12 +387,21 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
-
+#+end_src
+** Org-mode
+Интерактивный режим редактирования текста.
+*** Мелкие настройки
+#+begin_src emacs-lisp
 (defun ndr/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))
+#+end_src
 
+*** Настройка шрифтов
+По умолчанию использует шрифт из глобальной переменной variable-pitch-font. Стоит иметь это ввиду, даже несмотря на то, что какой-то шрифт тут уже задаётся.
+
+#+begin_src emacs-lisp
 (defun ndr/org-font-setup ()
   ;; Replace list hyphen with dot
   (font-lock-add-keywords 'org-mode
@@ -338,7 +427,10 @@
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+#+end_src
 
+*** Подключение org-mode
+#+begin_src emacs-lisp
 (use-package org
   :hook (org-mode . ndr/org-mode-setup)
   :config
@@ -350,7 +442,10 @@
 
   (setq org-agenda-files '("~/Documents/orgfiles/tasks.org" "~/Documents/orgfiles/contacts.org")) ; Какие файлы стоит читать org-agenda для того, чтобы подтянуть задачи и иные вещи (например, даты)
   (ndr/org-font-setup))
+#+end_src
 
+*** Замена значков заголовков и подзаголовков
+#+begin_src emacs-lisp
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
@@ -360,7 +455,10 @@
 (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+#+end_src
 
+*** Центрирование текста в org-mode
+#+begin_src emacs-lisp
 (defun ndr/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
@@ -368,9 +466,16 @@
 
 (use-package visual-fill-column
   :hook (org-mode . ndr/org-mode-visual-fill))
+#+end_src
 
+*** Настройки org-agenda
+**** Начало недели с понедельника
+#+begin_src emacs-lisp
 (setq calendar-week-start-day 1)
+#+end_src
 
+*** Выполнение кода из вырезок. Org-babel
+#+begin_src emacs-lisp
 (org-babel-do-load-languages
   'org-babel-load-languages
   '((emacs-lisp . t)
@@ -380,7 +485,12 @@
 (setq org-confirm-babel-evaluate nil)
 
 (require 'org-tempo)
+#+end_src
 
+* Мои настройки для некоторых пакетов и горячие клавиши
+** Горячие клавиши (general)
+
+#+begin_src emacs-lisp
 (ndr/leader-keys
   ; Buffer bindings
   "b"  '(:ignore t :which-key "buffer")
@@ -416,20 +526,31 @@
   "m"   '(:ignore t :which-key "currmode")
   ;; "ce" '(counsel-find-file ~/.emacs.d/init.el :which-key "Edit config")
 )
+#+end_src
 
+** hydra
+*** Изменение размера текста
+#+begin_src emacs-lisp
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
   ("k" text-scale-increase "Increase size")
   ("j" text-scale-decrease "Decrease size")
   ("f" nil "Finish" :exit t))
+#+end_src
 
+*** Изменение размера окна
+#+begin_src emacs-lisp
 (defhydra hydra-window-size (:timeout 4)
   "Change window size"
   ("k" enlarge-window-horizontally "Enlarge horizontally")
   ("j" shrink-window-horizontally "Shrink horizontally")
   ("f" nil "Finish" :exit t))
+#+end_src
 
+*** Бинды в general
+#+begin_src emacs-lisp
 (ndr/leader-keys
   "ts"  '(hydra-text-scale/body :which-key "Change the text size")
   "tws" '(hydra-window-size/body :which-key "Change the window size") 
 )
+#+end_src
