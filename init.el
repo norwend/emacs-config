@@ -381,6 +381,8 @@
 
 (require 'org-tempo)
 
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+
 (ndr/leader-keys
   ; Buffer bindings
   "b"  '(:ignore t :which-key "buffer")

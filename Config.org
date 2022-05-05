@@ -220,7 +220,7 @@
     :global-prefix "C-SPC"))
 #+end_src
 * Расширения
-** evil-mode
+** Evil-mode
 Режим эмуляции поведения vim.
 
 #+begin_src emacs-lisp
@@ -483,8 +483,13 @@
     (C . t)))
 
 (setq org-confirm-babel-evaluate nil)
+#+end_src
 
-(require 'org-tempo)
+*** Шаблоны для вставок исходного кода
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 #+end_src
 
 * Мои настройки для некоторых пакетов и горячие клавиши
