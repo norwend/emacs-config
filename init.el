@@ -383,6 +383,33 @@
 
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 
+(use-package lsp-mode
+:init
+;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+; (setq lsp-keymap-prefix "SPC l")
+:hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+       (c++-mode . lsp)
+       ;; if you want which-key integration
+       (lsp-mode . lsp-enable-which-key-integration))
+:commands lsp)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;  (use-package dap-mode)
+;  (require 'dap-lldb)
+
+(use-package company)
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode t))
+
+(use-package yasnippet
+  :ensure t
+  :init (yas-global-mode 1))
+
 (ndr/leader-keys
   ; Buffer bindings
   "b"  '(:ignore t :which-key "buffer")
@@ -420,6 +447,8 @@
   "cow" '(org-babel-tangle :which-key "Write config from Org file")
   "coe" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config in Org mode")
   "m"   '(:ignore t :which-key "currmode")
+
+  "l"   '(lsp-mode-map :which-key "lsp")
 )
 
 (defhydra hydra-text-scale (:timeout 4)

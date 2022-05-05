@@ -501,10 +501,52 @@
 
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 #+end_src
+* ИСР (IDE) для C++ (и, возможно, Python)
+** LSP-mode
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  ; (setq lsp-keymap-prefix "SPC l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (c++-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+#+end_src
+*** DAP-mode?
+Пока что под вопросом.
+
+#+begin_src emacs-lisp
+ ;  (use-package dap-mode)
+ ;  (require 'dap-lldb)
+#+end_src
+
+** Company-mode
+#+begin_src emacs-lisp
+  (use-package company)
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+#+end_src
+
+** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode t))
+#+end_src
+
+** Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :init (yas-global-mode 1))
+#+end_src
 
 * Мои настройки для некоторых пакетов и горячие клавиши
 ** Горячие клавиши (general)
-
 #+begin_src emacs-lisp
   (ndr/leader-keys
     ; Buffer bindings
@@ -543,6 +585,8 @@
     "cow" '(org-babel-tangle :which-key "Write config from Org file")
     "coe" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config in Org mode")
     "m"   '(:ignore t :which-key "currmode")
+
+    "l"   '(lsp-mode-map :which-key "lsp")
   )
 #+end_src
 
