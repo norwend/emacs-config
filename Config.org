@@ -513,6 +513,7 @@
       (setq lsp-keymap-prefix "C-c l")
       :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
              (c++-mode . lsp)
+             (python-mode . lsp)
              ;; if you want which-key integration
              (lsp-mode . lsp-enable-which-key-integration))
       :commands lsp lsp-deferred
@@ -574,8 +575,19 @@
 ** Smartparens
 #+begin_src emacs-lisp
     (use-package smartparens
-      :hook (c++-mode . smartparens-mode))
+      :hook 
+      (c++-mode . smartparens-mode)
+      (python-mode . smartparens-mode))
     (require 'smartparens-config)
+#+end_src
+
+** Компиляция отдельного файла из буфера
+#+begin_src emacs-lisp
+(defun ndr/save-compile-run()
+    (interactive)
+    (let* ((src (file-name-nondirectory (buffer-file-name)))
+           (exe (file-name-sans-extension src)))
+      (compile (concat "g++ " src " -O2 -std=c++11 -o " exe " && ./" exe " && rm " exe))))
 #+end_src
 
 * Мои настройки для некоторых пакетов и горячие клавиши
@@ -613,14 +625,24 @@
 
     ;; Misc
     "c"   '(:ignore t :which-key "config")
-    "ce"  '((lambda () (interactive) (find-file "~/.emacs.d/init.el")) :which-key "Edit config")
     "cr"  '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload config")
-    "cow" '(org-babel-tangle :which-key "Write config from Org file")
-    "coe" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config in Org mode")
-    "m"   '(:ignore t :which-key "currmode")
-
-    ; "l"   '(lsp-mode-map :which-key "lsp")
+    "ce" '((lambda () (interactive) (find-file "~/.emacs.d/Config.org")) :which-key "Edit config")
   )
+
+  (general-define-key
+   :keymaps '(c++-mode-map)
+   :prefix "SPC"
+   :states '(normal)
+   "m"  '(:ignore t :which-key "C++")
+   "mc" '(ndr/save-compile-run :which-key "Compile and run the buffer contents")
+   )
+
+  (general-define-key
+   :keymaps '(org-mode-map)
+   :prefix "SPC"
+   :states '(normal)
+   "cw" '((lambda () (interactive) (org-babel-tangle) (load-file "~/.emacs.d/init.el") (org-mode-restart)) :which-key "Write config"))
+
 #+end_src
 
 ** hydra
