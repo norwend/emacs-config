@@ -20,10 +20,20 @@
 
 ** Шрифты 
 #+begin_src emacs-lisp
-(custom-theme-set-faces
-   'user
-   '(variable-pitch ((t (:family "PT Serif" :height 180))))
-   '(fixed-pitch ((t ( :family "PT Mono" :height 160)))))
+#+end_src
+
+* Общие настройки
+** Установка пути запуска программ
+#+begin_src emacs-lisp
+  (setq exec-path '("/Users/stepan/.emacs.d/bin" "/Users/stepan/.bin" "/Users/stepan/opt/anaconda3/condabin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/opt/X11/bin" "/Library/Apple/usr/bin" "/Users/stepan/.cargo/bin"  "/opt/homebrew/Cellar/emacs-plus@28/28.1/libexec/emacs/28.1/aarch64-apple-darwin21.4.0"))
+  (setenv "PATH" "/Users/stepan/.emacs.d/bin:/Users/stepan/.bin:/Users/stepan/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/stepan/.cargo/bin")
+#+end_src
+** Размер отступов
+#+begin_src emacs-lisp
+  (setq ndr/indent 4)
+  (setq-default python-indent-offset ndr/indent)
+  (setq-default c-basic-offset ndr/indent)
+  (setq-default electric-indent-inhibit t)
 #+end_src
 
 * Настройка пакетного менеджера
@@ -47,7 +57,7 @@
 #+end_src
 
 * Интерфейс
-** Базовые настройки
+** Базовые настройки 
 #+begin_src emacs-lisp
   ; No startup message
   (setq inhibit-startup-message t)
@@ -64,8 +74,6 @@
   (column-number-mode)
   (global-display-line-numbers-mode t)
 
-  (setenv "PATH" "/Users/stepan/.emacs.d/bin:/Users/stepan/.bin:/Users/stepan/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/stepan/.cargo/bin")
-
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
                   term-mode-hook
@@ -78,10 +86,17 @@
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
   (setq ring-bell-function 'ignore)
-
-  (set-face-attribute 'default nil :family "PT Mono" :height 170)
 #+end_src
 
+** Шрифт
+#+begin_src emacs-lisp
+  (custom-theme-set-faces
+     'user
+     '(variable-pitch ((t (:family "PT Serif" :height 200))))
+     '(fixed-pitch ((t ( :family "PT Mono" :height 200)))))
+  
+  (set-face-attribute 'default nil :family "PT Mono" :height 200)
+#+end_src
 ** Doom-modeline
 #+begin_src emacs-lisp
 (use-package all-the-icons
@@ -124,13 +139,13 @@
 
 ** Красивая прокрутка
 #+begin_src emacs-lisp
-(use-package good-scroll)
-(require 'good-scroll)
-(good-scroll-mode 1)
+  (use-package good-scroll)
+  (require 'good-scroll)
+  (good-scroll-mode 1)
 
-(use-package smooth-scrolling)
-(require 'smooth-scrolling)
-(smooth-scrolling-mode 1)
+  (use-package smooth-scrolling)
+  (require 'smooth-scrolling)
+  (smooth-scrolling-mode 1)
 #+end_src
 
 * Помощники
@@ -500,30 +515,32 @@
 
 *** Шаблоны для вставок исходного кода
 #+begin_src emacs-lisp
-  (require 'org-tempo)
+    (require 'org-tempo)
 
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 #+end_src
-* ИСР (IDE) для C++ (и, возможно, Python)
+* ИСР (IDE)
 ** LSP-mode
 #+begin_src emacs-lisp
-      (use-package lsp-mode
-      :init
-      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-      (setq lsp-keymap-prefix "C-c l")
-      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-             (c++-mode . lsp)
-             (python-mode . lsp)
-             ;; if you want which-key integration
-             (lsp-mode . lsp-enable-which-key-integration))
-      :commands lsp lsp-deferred
-      :config
-      (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-      (use-package lsp-treemacs :commands lsp-treemacs-errors-list
-        :config
-        (lsp-treemacs-sync-mode 1)
-        :after lsp)
-      (setq lsp-enable-on-type-formatting nil))
+  (use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (c++-mode . lsp)
+         (python-mode . lsp)
+         (cmake-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp lsp-deferred
+  :config
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list
+    :config
+    (lsp-treemacs-sync-mode 1)
+    :after lsp)
+  (setq lsp-enable-on-type-formatting nil))
+
 #+end_src
 *** DAP-mode?
 Пока что под вопросом.
@@ -569,7 +586,9 @@
 #+begin_src emacs-lisp
   (use-package yasnippet
     :ensure t
-    :init (yas-global-mode 1))
+    :init (yas-global-mode 1)
+    :config
+    (setq yas-snippet-dirs '("~/emacs.d/mysnippets")))
 #+end_src
 
 ** Smartparens
@@ -581,7 +600,8 @@
     (require 'smartparens-config)
 #+end_src
 
-** Компиляция отдельного файла из буфера
+** C++
+*** Быстрая компиляция файла из буфера
 #+begin_src emacs-lisp
 (defun ndr/save-compile-run()
     (interactive)
@@ -590,6 +610,36 @@
       (compile (concat "g++ " src " -O2 -std=c++11 -o " exe " && ./" exe " && rm " exe))))
 #+end_src
 
+*** CMake-mode
+#+begin_src emacs-lisp
+  (use-package cmake-mode)
+#+end_src
+
+** Python
+*** Пакеты
+#+begin_src emacs-lisp
+  (use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :custom
+  (python-shell-interpreter "/opt/homebrew/bin/python3")
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  ;; (python-shell-interpreter "python3")
+  ;; (dap-python-executable "python3")
+  )
+
+  (use-package pyvenv
+  :config
+  (pyvenv-mode 1))
+
+  (use-package lsp-pyright
+  :ensure t
+  :after lsp-mode
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
+
+#+end_src
 * Мои настройки для некоторых пакетов и горячие клавиши
 ** Горячие клавиши (general)
 #+begin_src emacs-lisp
