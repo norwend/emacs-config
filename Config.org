@@ -92,10 +92,10 @@
 #+begin_src emacs-lisp
   (custom-theme-set-faces
      'user
-     '(variable-pitch ((t (:family "PT Serif" :height 200))))
-     '(fixed-pitch ((t ( :family "PT Mono" :height 200)))))
+     '(variable-pitch ((t (:family "PT Serif" :height 160))))
+     '(fixed-pitch ((t ( :family "PT Mono" :height 160)))))
   
-  (set-face-attribute 'default nil :family "PT Mono" :height 200)
+  (set-face-attribute 'default nil :family "PT Mono" :height 160)
 #+end_src
 ** Doom-modeline
 #+begin_src emacs-lisp
@@ -530,6 +530,7 @@
          (c++-mode . lsp)
          (python-mode . lsp)
          (cmake-mode . lsp)
+         ;; (glsl-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp lsp-deferred
@@ -541,13 +542,6 @@
     :after lsp)
   (setq lsp-enable-on-type-formatting nil))
 
-#+end_src
-*** DAP-mode?
-Пока что под вопросом.
-
-#+begin_src emacs-lisp
- ;  (use-package dap-mode)
- ;  (require 'dap-lldb)
 #+end_src
 
 *** LSP-UI
@@ -613,8 +607,26 @@
 *** CMake-mode
 #+begin_src emacs-lisp
   (use-package cmake-mode)
+  (defun ndr/cmake-conf-on-save ()
+    "Sync org file to Raspberry Pi with external script."
+  (when (eq major-mode 'cmake-mode)
+    (projectile-configure-project "cmake . -b build -DCMAKE_EXPORT_COMPILE_COMMANDS=1")))
+
+  (defun ndr/cmake-compile-run () (interactive)
+    (projectile-compile-project "")
+    (projectile-run-project ""))
+
+  (add-hook 'after-save-hook #'ndr/cmake-conf-on-save)
+
 #+end_src
 
+*** GLSL-mode
+#+begin_src emacs-lisp
+  (use-package glsl-mode)
+  (autoload 'glsl-mode "glsl-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+#+end_src
 ** Python
 *** Пакеты
 #+begin_src emacs-lisp
@@ -640,6 +652,13 @@
                           (lsp))))  ; or lsp-deferred
 
 #+end_src
+
+** Zen-mode (writeroom mode)
+
+#+begin_src emacs-lisp
+  (use-package writeroom-mode)
+#+end_src
+
 * Мои настройки для некоторых пакетов и горячие клавиши
 ** Горячие клавиши (general)
 #+begin_src emacs-lisp
@@ -652,6 +671,7 @@
     ; Various toggles
     "t"  '(:ignore t :which-key "toggle")
     "tt" '(counsel-load-theme :which-key "Choose theme")
+    "tz" '(writeroom-mode :which-key "Toggle zen")
 
     ; Files
     "f"  '(:ignore t :which-key "file")
@@ -685,6 +705,7 @@
    :states '(normal)
    "m"  '(:ignore t :which-key "C++")
    "mc" '(ndr/save-compile-run :which-key "Compile and run the buffer contents")
+   "mr" '(ndr/cmake-compile-run :which-key "Compile and run the project")
    )
 
   (general-define-key
